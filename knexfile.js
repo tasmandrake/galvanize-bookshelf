@@ -1,5 +1,7 @@
 'use strict';
 
+console.log(process.env.DATABASE_URL);
+
 module.exports = {
   development: {
     client: 'pg',
