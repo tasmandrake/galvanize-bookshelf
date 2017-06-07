@@ -1,6 +1,7 @@
-'use strict';
 /* eslint-disable camelcase */
 /* eslint-disable max-len */
+
+'use strict';
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
