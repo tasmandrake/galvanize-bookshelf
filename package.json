@@ -9,7 +9,6 @@
     "lint": "eslint  --ignore-pattern public/js/vendor",
     "nf": "nf start",
     "start": "node server.js",
-    "web": "node server.js",
     "test": "dropdb bookshelf_test; createdb bookshelf_test; mocha"
   },
   "repository": {
