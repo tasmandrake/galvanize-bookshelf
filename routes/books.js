@@ -1,15 +1,11 @@
 'use strict';
 
 const knex = require('../knex.js');
-const bodyParser = require('body-parser');
 const humps = require('humps');
 const express = require('express');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
-
-router.use(bodyParser.urlencoded({ extended: false }));
-router.use(bodyParser.json());
 
 router.get('/books', (req, res) => {
   knex('books')
@@ -32,8 +28,8 @@ router.get('/books/:id', (req, res) => {
 
   if (!Number(id)) {
     return res.status(404)
-              .set({ 'Content-Type': 'plain/text' })
-              .send('Not Found');
+      .set({ 'Content-Type': 'plain/text' })
+      .send('Not Found');
   }
   knex('books')
     .select(
@@ -50,8 +46,8 @@ router.get('/books/:id', (req, res) => {
     .then((book) => {
       if (!book.length) {
         return res.status(404)
-                  .set({ 'Content-Type': 'plain/text' })
-                  .send('Not Found');
+          .set({ 'Content-Type': 'plain/text' })
+          .send('Not Found');
       }
       res.send(book[0]);
     });
@@ -62,28 +58,28 @@ router.post('/books', (req, res) => {
 
   if (!body.title) {
     return res.status(400)
-              .set({ 'Content-Type': 'plain/text' })
-              .send('Title must not be blank');
+      .set({ 'Content-Type': 'plain/text' })
+      .send('Title must not be blank');
   }
   else if (!body.author) {
     return res.status(400)
-              .set({ 'Content-Type': 'plain/text' })
-              .send('Author must not be blank');
+      .set({ 'Content-Type': 'plain/text' })
+      .send('Author must not be blank');
   }
   else if (!body.genre) {
     return res.status(400)
-              .set({ 'Content-Type': 'plain/text' })
-              .send('Genre must not be blank');
+      .set({ 'Content-Type': 'plain/text' })
+      .send('Genre must not be blank');
   }
   else if (!body.description) {
     return res.status(400)
-              .set({ 'Content-Type': 'plain/text' })
-              .send('Description must not be blank');
+      .set({ 'Content-Type': 'plain/text' })
+      .send('Description must not be blank');
   }
   else if (!body.cover_url) {
     return res.status(400)
-              .set({ 'Content-Type': 'plain/text' })
-              .send('Cover URL must not be blank');
+      .set({ 'Content-Type': 'plain/text' })
+      .send('Cover URL must not be blank');
   }
   knex('books')
     .insert(body)
@@ -104,8 +100,8 @@ router.patch('/books/:id', (req, res) => {
 
   if (!Number(id)) {
     return res.status(404)
-              .set({ 'Content-Type': 'plain/text' })
-              .send('Not Found');
+      .set({ 'Content-Type': 'plain/text' })
+      .send('Not Found');
   }
   knex('books')
     .where('id', id)
@@ -119,12 +115,10 @@ router.patch('/books/:id', (req, res) => {
       'cover_url AS coverUrl'
     ])
     .then((updateBook) => res.send(updateBook[0]))
-    .catch((error) => {
-      if (error) {
-        return res.status(404)
-                  .set({ 'Content-Type': 'plain/text' })
-                  .send('Not Found');
-      }
+    .catch(() => {
+      return res.status(404)
+        .set({ 'Content-Type': 'plain/text' })
+        .send('Not Found');
     });
 });
 
@@ -133,8 +127,8 @@ router.delete('/books/:id', (req, res) => {
 
   if (!Number(id)) {
     return res.status(404)
-              .set({ 'Content-Type': 'plain/text' })
-              .send('Not Found');
+      .set({ 'Content-Type': 'plain/text' })
+      .send('Not Found');
   }
   knex('books')
     .where('id', id)
@@ -151,8 +145,8 @@ router.delete('/books/:id', (req, res) => {
     .then((deletedBook) => {
       if (!deletedBook) {
         return res.status(404)
-                  .set({ 'Content-Type': 'plain/text' })
-                  .send('Not Found');
+          .set({ 'Content-Type': 'plain/text' })
+          .send('Not Found');
       }
       res.send(deletedBook);
     });

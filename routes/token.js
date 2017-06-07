@@ -2,11 +2,8 @@
 
 'use strict';
 
-require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const knex = require('../knex.js');
 
@@ -14,22 +11,14 @@ const knex = require('../knex.js');
 const router = express.Router();
 const secret = process.env.SECRET;
 
-router.use(cookieParser());
-router.use(bodyParser.urlencoded({
-  extended: false
-}));
-router.use(bodyParser.json());
-
 router.get('/token', (req, res) => {
   const token = req.cookies.token;
 
   jwt.verify(token, secret, (err) => {
     if (err) {
-      res.set({ 'Content-Type': 'application/json' }).send('false');
+      return res.set({ 'Content-Type': 'application/json' }).send('false');
     }
-    else {
-      res.set({ 'Content-Type': 'application/json' }).send('true');
-    }
+    res.set({ 'Content-Type': 'application/json' }).send('true');
   });
 });
 
@@ -68,12 +57,10 @@ router.post('/token', (req, res) => {
             .set({ 'Content-Type': 'plain/text' })
             .send('Bad email or password');
       }
-    }).catch((error) => {
-      if (error) {
-        res.status(400)
-            .set({ 'Content-Type': 'plain/text' })
-            .send('Bad email or password');
-      }
+    }).catch(() => {
+      res.status(400)
+          .set({ 'Content-Type': 'plain/text' })
+          .send('Bad email or password');
     });
 });
 
